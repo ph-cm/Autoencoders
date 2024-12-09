@@ -58,3 +58,16 @@ autoencoder.fit(x_train, x_train,
                 batch_size=128,
                 shuffle=True,
                 validation_data=(x_test, x_test))
+
+y_test = autoencoder.predict(x_test[0:5])
+plotn(5,x_test)
+plotn(5,y_test)
+
+encoder = Model(input_img, encoded)
+encoded_imgs = encoder.predict(x_test[0:5])
+
+plotn(5,encoded_imgs.reshape(5,-1,8))
+
+print(encoded_imgs.max(),encoded_imgs.min())
+res = decoder.predict(7*np.random.rand(7,4,4,8))
+plotn(7,res)
