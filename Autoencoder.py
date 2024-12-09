@@ -71,3 +71,21 @@ plotn(5,encoded_imgs.reshape(5,-1,8))
 print(encoded_imgs.max(),encoded_imgs.min())
 res = decoder.predict(7*np.random.rand(7,4,4,8))
 plotn(7,res)
+
+#Denoising
+def noisify(data):
+    return np.clip(data+np.random.normal(loc=0.5,scale=0.5,size=data.shape),0.,1.)
+x_train_noise = noisify(x_train)
+x_test_noise = noisify(x_test)
+
+plotn(5,x_train_noise)
+
+autoencoder.fit(x_train_noise, x_train,
+                epochs=25,
+                batch_size=128,
+                shuffle=True,
+                validation_data=(x_test_noise, x_test))
+
+y_test = autoencoder.predict(x_test_noise[0:5])
+plotn(5,x_test_noise)
+plotn(5,y_test)
